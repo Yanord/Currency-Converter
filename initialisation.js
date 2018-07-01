@@ -1,8 +1,23 @@
-  
+
+let open = indexedDB.open("MyCurrenciesConverterDatabase", 1);
+open.onupgradeneeded = function() {
+    let db = open.result;
+    let store = db.createObjectStore("MyCurrenciesObjectStore", {keyPath: "id"});
+    let index = store.createIndex("currencyNameIndex", "currencyName");
+};
+
+open.onsuccess = function() {
+   console.log("Data base created");
+};
+
+open.onerror = function() {
+   console.log("Data base Not created");
+};
+
 // load currenes
-   fetch("https://free.currencyconverterapi.com/api/v5/currencies", {
+   fetch( "https://free.currencyconverterapi.com/api/v5/currencies", {
                  method: 'get'
-              }).then(function(response) { return response.json(); })
+              }).then(function(response) { return response.json() })
                 .then(function(data) {
 
                      let selectFrom = document.getElementById("currencyFrom");
@@ -28,8 +43,8 @@
                       currencyName = ""; currencyId = ""; currencySymbol = "";
                      }
 
+                  })//.catch(function(errer){ console.log('sfsjhfkjh'); });
 
-                  });
 
 
 function convertCurrencies(e) {
@@ -54,6 +69,6 @@ function convertCurrencies(e) {
                       }
                   });
     return false;
-   }
+}
 
 
